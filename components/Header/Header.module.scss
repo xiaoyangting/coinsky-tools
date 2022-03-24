@@ -1,0 +1,39 @@
+.header {
+  width: 100%;
+  height: 70px;
+  background-color: #fff;
+  :global {
+
+    .header_content {
+      max-width: 1460px;
+      height: 100%;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .header_left_logo {
+
+      }
+      .header_right_download {
+        width: 126px;
+        height: 34px;
+        text-align: center;
+        line-height: 34px;
+        background: #0B65FF;
+        border-radius: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        span {
+          font-size: 12px;
+          font-weight: 500;
+          color: #FFFFFF;
+          margin-left: 6px;
+        }
+      }
+    }
+
+
+  }
+}

@@ -1,8 +1,9 @@
 import Head from 'next/head'
+import Header from '../../components/Header'
 
-export default function Home() {
+export default function CurrencyConverter() {
   return (
-    <div>
+    <>
       {/* 对于html 头部 */}
       <Head>
         <title>Create Next App</title>
@@ -11,13 +12,14 @@ export default function Home() {
       </Head>
 
       {/* 内容 */}
-      <main>
-        123
+      <main className='page_tools_bj'>
+        {/* 页面头部内容 */}
+        <Header></Header>
       </main>
 
       {/* 底部 */}
       <footer>
       </footer>
-    </div>
+    </>
   )
 }
