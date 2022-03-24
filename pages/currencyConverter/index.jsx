@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 
 export default function CurrencyConverter() {
   return (
@@ -14,12 +15,10 @@ export default function CurrencyConverter() {
       {/* 内容 */}
       <main className='page_tools_bj'>
         {/* 页面头部内容 */}
-        <Header></Header>
-      </main>
+        <Header />
 
-      {/* 底部 */}
-      <footer>
-      </footer>
+        <Footer />
+      </main>
     </>
   )
 }
