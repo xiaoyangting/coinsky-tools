@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 import Header from '../../components/Header'
 import Title from '../../components/PageTitle'
+import Footer from '../../components/Footer'
 
 import style from './index.module.scss'
 
@@ -54,6 +55,7 @@ export default function NewCurriculum() {
 
       {/* 底部 */}
       <footer>
+        <Footer/>
       </footer>
     </>
   )
