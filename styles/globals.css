@@ -91,5 +91,5 @@ body,
   border-radius: 10px !important;
 }
 .ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-  background-color: #fff;
+  
 }

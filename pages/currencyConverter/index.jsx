@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState } from 'react';
+import { createRef, useState } from 'react';
 import { Select } from 'antd';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -13,7 +13,7 @@ const { Option } = Select;
 
 const data = [
   {
-    currency_code: "USD",
+    coin_id: "USD",
     fullname: "USD-$",
     icon: "https://bc_api.hractual.com/static/images/currency/usd.png",
     is_currency: 1,
@@ -27,11 +27,56 @@ const data = [
     is_currency: 0,
     name: "BTC",
     price: 44094.63,
+  },
+  {
+    coin_id: "ethereum",
+    fullname: "Ethereum",
+    icon: "https://coinsky.s3.us-west-1.amazonaws.com/coin-icon/20220211/ethereum.png",
+    is_currency: 0,
+    name: "ETH",
+    price: 3125.52,
   }
 ]
 
 export default function CurrencyConverter() {
   const [currencyData, setCurrencyData] = useState([...data])
+  const [presentCurrency, setPresentCurrency] = useState({
+    type: 0,
+    value: 0,
+    ...currencyData[0]
+  }) // 当前货币
+  const [targetCurrency, setTargetCurrency] = useState({
+    type: 1,
+    value: 0,
+    ...currencyData[1]
+  }) // 目标货币
+
+  // 计算转换
+  const onChangeInput = (inputObj) => {
+    const { value, currencytype } = inputObj
+    if (currencytype.type ) { // 为 1 时 计算 当前货币
+      setTargetCurrency({...targetCurrency, value})
+      setPresentCurrency((presentCurrency) => {
+        return {
+          ...presentCurrency,
+          value: (value * targetCurrency.price) / presentCurrency.price
+        }
+      })
+    } else { // 为 0 时 计算 目标货币
+      setPresentCurrency({ ...presentCurrency, value })
+      setTargetCurrency((targetCurrency) => {
+        return {
+          ...targetCurrency,
+          value: (value * presentCurrency.price) / targetCurrency.price
+        }
+      })
+    }
+  }
+  const onChangeSelect = (SelectObj) => {
+    SelectObj.type ?
+      setTargetCurrency((targetCurrency) => ({...targetCurrency, ...SelectObj})) :
+      setPresentCurrency((presentCurrency) => ({...presentCurrency, ...SelectObj}))
+  }
 
   return (
     <>
@@ -46,13 +91,11 @@ export default function CurrencyConverter() {
       <main className={`${styles.currency_converter_page} page_tools_bj`} >
         {/* 页面头部内容 */}
         <Header />
-
         {/* 页面内容 */}
         <div className="currency_converter_content">
           <PageTitle title="Wallet Authorisation Search" />
 
           <div className="currency_converter_box">
-
             {/* 小标题 与 重置按钮 */}
             <div className="currency_converter_box_title_reset_btn">
               <SmallToolsTitle title="Data provided by coinsky，2022/02/25 Update" />
@@ -61,7 +104,6 @@ export default function CurrencyConverter() {
                 <span>Refresh</span>
               </div>
             </div>
-
             {/* 货币计算结果 */}
             <div className="currency_text">
               <span className='currency_num' style={{ marginLeft: '0' }}>0</span>
@@ -70,11 +112,19 @@ export default function CurrencyConverter() {
               <span className='currency_num'>0</span>
               <span className='currency_type'>United States Dollar“$”(USD)</span>
             </div>
-
             {/* 货币选择器 */}
             <div className="converter_box">
-              <ConverterRow currencyData={currencyData}></ConverterRow>
-              <ConverterRow currencyData={currencyData} style={{ marginTop: '2.75rem' }}></ConverterRow>
+              <ConverterRow
+                currencyData={currencyData}
+                currencytype={presentCurrency}
+                onChangeInput={onChangeInput}
+                onChangeSelect={onChangeSelect} />
+              <ConverterRow
+                currencyData={currencyData}
+                currencytype={targetCurrency}
+                onChangeInput={onChangeInput}
+                onChangeSelect={onChangeSelect}
+                style={{ marginTop: '2.75rem' }} />
             </div>
 
           </div>
@@ -85,21 +135,37 @@ export default function CurrencyConverter() {
     </>
   )
 }
-import React from 'react'
 
+// 货币选择器 与 输入框模块
 function ConverterRow(props) {
-  const { style, currencyData } = props
-  console.log(currencyData);
-  const onChange = (value) => {
+  const { style, currencyData, onChangeInput, onChangeSelect, currencytype } = props
+  const selectRef = createRef()
+  const OptionStyle = {
+    height: '46px',
+    // backgroundColor: '#fff',
+    display: 'flex',
+    alignItems: 'center'
+  }
+  const onChange = (value, {item}) => {
+    console.log(item);
+    selectRef.current.blur()
+    onChangeSelect({
+      ...currencytype,
+      ...item
+    })
     console.log(`selected ${value}`);
   }
   const onSearch = (val) => {
     console.log('search:', val);
   }
+
   return (
     <>
       <div className="converter_row" style={style}>
         <Select
+          ref={selectRef}
+          value={currencytype.coin_id}
+          defaultOpen
           className='converter_Select'
           showSearch
           placeholder="Select a person"
@@ -113,21 +179,27 @@ function ConverterRow(props) {
           {
             currencyData.map((item, index) => {
               return (
-                <Option value={item.currency_code} key={ `${item.currency_code}${index}` }>
-                <div className={styles.converter_Select_Option}>
-                  <Image src={item.icon} width={16} height={16} />
-                  <div className="converter_row_left_text">
-                    <span className='currency_name'>{ item.fullname }</span>
-                    <span>(BTC)</span>
+                <Option
+                  style={OptionStyle}
+                  value={item.coin_id}
+                  key={`${item.currency_code}${index}`}
+                  item={item}
+                >
+                  <div className={styles.converter_Select_Option}>
+                    <Image src={item.icon} width={16} height={16} alt="" />
+
+                    <div className="converter_row_left_text">
+                      <span className='currency_name'>{item.fullname}</span>
+                      <span>(BTC)</span>
+                    </div>
                   </div>
-                </div>
                 </Option>
               )
             })
           }
         </Select>
         <div className="converter_input">
-          <NumberInput />
+          <NumberInput onChangeInput={onChangeInput} currencytype={currencytype} />
         </div>
       </div>
     </>
