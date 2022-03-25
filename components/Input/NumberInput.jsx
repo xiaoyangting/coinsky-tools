@@ -17,12 +17,13 @@ export default function NumberInput(props) {
       } else if (value === '.' ) {
         value = '0.'
       }
+      console.log(value);
       value = value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '')
       iValue = value
       e.target.value = iValue
       iValue !== '' && onChangeInput({
         currencytype,
-        value: parseInt(iValue)
+        value: iValue
       })
     }
   }
@@ -31,7 +32,6 @@ export default function NumberInput(props) {
     inputRef.current.value = iValue
   }
   useEffect(() => {
-    console.log('更新')
     setInput()
   })
   // 判断是否输入法输入
