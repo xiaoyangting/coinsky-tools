@@ -4,7 +4,27 @@
   :global {
     .class_list {
       width: 100%;
-      padding-top: 8px;
+      position: relative;
+
+      .title {
+        width: 100%;
+        color: #3D414D;
+        font-size: 16px;
+        font-weight: 600;
+        padding-left: 15px;
+        margin-bottom: 16px;
+
+        &::after {
+          content: '';
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: #3D414D;
+          position: absolute;
+          top: 10px;
+          left: 0;
+        }
+      }
 
       .class_item {
         width: 100%;

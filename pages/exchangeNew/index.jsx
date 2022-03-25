@@ -17,14 +17,12 @@ export default function Exchange() {
       width: '200px',
       dataIndex: 'name',
       className: 'exchange_name',
-      render: (name) => {
-        return (
-          <>
-            <Image src="/svg/icon-1.svg" width={20} height={20} alt="" />
-            <a>{name}</a>
-          </>
-        )
-      }
+      render: (name) => (
+        <>
+          <Image src="/svg/icon-1.svg" width={20} height={20} alt="" />
+          <a>{name}</a>
+        </>
+      )
     },
     {
       width: '210px',

@@ -24,7 +24,7 @@ export default function curriculumDetail() {
         {/* 页面详情内容 */}
         <div className="container">
           <div className={style.detail}>
-            <ToolsTitle title="Blockchain White Book" />
+            <ToolsTitle bottom='26px' title="Blockchain White Book" />
 
             <div className="article">
               <div className="article_title">How to DeFi</div>

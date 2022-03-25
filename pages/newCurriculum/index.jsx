@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
-import ToolsTitle from '../../components/ToolsTitle'
+import ToolsTitle, { SmallToolsTitle } from '../../components/ToolsTitle'
 
 import style from './index.module.scss'
 
@@ -30,20 +30,20 @@ export default function NewCurriculum() {
             <ToolsTitle title="Beginner’s Guide" />
 
             <div className="class_list">
-              {/* <h4 className="title">Beginner’s Guide</h4> */}
+              <div className='title'>Preface</div>
 
               <div className="class_item">
-                <div className="class_name">Blockchain White Book</div>
+                <div className="class_name">1.Blockchain White Book</div>
                 <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
               </div>
 
               <div className="class_item">
-                <div className="class_name">Blockchain White Book</div>
+                <div className="class_name">2.Blockchain White Book</div>
                 <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
               </div>
 
               <div className="class_item">
-                <div className="class_name">Blockchain White Book</div>
+                <div className="class_name">3.Blockchain White Book</div>
                 <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
               </div>
             </div>
@@ -55,7 +55,7 @@ export default function NewCurriculum() {
 
       {/* 底部 */}
       <footer>
-        <Footer/>
+        <Footer />
       </footer>
     </>
   )
