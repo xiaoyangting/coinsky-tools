@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 export default function Home() {
   return (
-    <div>
+    <>
       {/* 对于html 头部 */}
       <Head>
         <title>Create Next App</title>
@@ -18,6 +18,6 @@ export default function Home() {
       {/* 底部 */}
       <footer>
       </footer>
-    </div>
+    </>
   )
 }
