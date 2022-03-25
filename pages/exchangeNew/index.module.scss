@@ -1,0 +1,82 @@
+.exchange {
+  width: 100%;
+
+  :global {
+    .prompt {
+      width: 100%;
+      color: #768199;
+      font-size: 13px;
+      font-weight: 400;
+      margin-bottom: 20px;
+
+      span {
+        color: #0B65FF;
+        text-decoration: underline;
+      }
+    }
+
+    .ant-table-thead {
+      background-color: #fff;
+
+      tr {
+        th {
+          color: #626C80;
+          font-size: 14px;
+          font-weight: 400;
+          background: none;
+
+          &::before {
+            width: 0 !important;
+          }
+        }
+
+        .exchange_name {
+          padding-left: 30px;
+        }
+
+        .exchange_bulletin {
+          padding-right: 30px;
+        }
+      }
+    }
+
+    .ant-table-tbody {
+      background-color: #fff;
+
+      td {
+        color: #14161A;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .exchange_name {
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+
+        a {
+          color: #14161A;
+          font-size: 14px;
+          font-weight: 400;
+          margin-left: 6px;
+        }
+      }
+  
+      .exchange_bulletin {
+        color: #0B65FF;
+        font-size: 14px;
+        font-weight: 400;
+        padding-right: 30px;
+      }
+
+      .rise {
+        color: #12A760;
+      }
+
+      .fall {
+        color: #F52727;
+      }
+    }
+
+  }
+}
