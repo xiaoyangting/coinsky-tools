@@ -54,12 +54,13 @@ export default function CurrencyConverter() {
   // 计算转换
   const onChangeInput = (inputObj) => {
     const { value, currencytype } = inputObj
+    console.log(value);
     if (currencytype.type ) { // 为 1 时 计算 当前货币
       setTargetCurrency({...targetCurrency, value})
       setPresentCurrency((presentCurrency) => {
         return {
           ...presentCurrency,
-          value: (value * targetCurrency.price) / presentCurrency.price
+          value: (parseFloat(value) * targetCurrency.price) / presentCurrency.price
         }
       })
     } else { // 为 0 时 计算 目标货币
@@ -67,7 +68,7 @@ export default function CurrencyConverter() {
       setTargetCurrency((targetCurrency) => {
         return {
           ...targetCurrency,
-          value: (value * presentCurrency.price) / targetCurrency.price
+          value: (parseFloat(value) * presentCurrency.price) / targetCurrency.price
         }
       })
     }
@@ -165,7 +166,6 @@ function ConverterRow(props) {
         <Select
           ref={selectRef}
           value={currencytype.coin_id}
-          defaultOpen
           className='converter_Select'
           showSearch
           placeholder="Select a person"
