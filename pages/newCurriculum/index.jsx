@@ -3,8 +3,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 
 import Header from '../../components/Header'
-import Title from '../../components/PageTitle'
 import Footer from '../../components/Footer'
+import ToolsTitle from '../../components/ToolsTitle'
 
 import style from './index.module.scss'
 
@@ -27,7 +27,7 @@ export default function NewCurriculum() {
         <div className="container">
 
           <div className={style.class}>
-            <Title title="Beginner’s Guide" />
+            <ToolsTitle title="Beginner’s Guide" />
 
             <div className="class_list">
               {/* <h4 className="title">Beginner’s Guide</h4> */}

@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
-import Title from '../../components/PageTitle'
+import ToolsTitle from '../../components/ToolsTitle'
 
 import style from './index.module.scss'
 
@@ -107,7 +107,7 @@ export default function Exchange() {
         <div className="container">
 
           <div className={style.exchange}>
-            <Title title="New on the Exchange" />
+            <ToolsTitle title="New on the Exchange" />
 
             <div className="prompt">
               Download the app to subscribe to notifications of new releases on each exchange,&nbsp;

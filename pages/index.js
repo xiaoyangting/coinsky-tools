@@ -11,7 +11,7 @@ export default function Home() {
       </Head>
 
       {/* 内容 */}
-      <main>
+      <main className='page_tools_bj'>
         123
       </main>
 

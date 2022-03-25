@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Footer from '../../components/Footer'
 
 import Header from '../../components/Header'
-import Title from '../../components/PageTitle'
+import ToolsTitle from '../../components/ToolsTitle'
 
 import style from './curriculumDetail.module.scss'
 
@@ -24,7 +24,7 @@ export default function curriculumDetail() {
         {/* 页面详情内容 */}
         <div className="container">
           <div className={style.detail}>
-            <Title title="Blockchain White Book" />
+            <ToolsTitle title="Blockchain White Book" />
 
             <div className="article">
               <div className="article_title">How to DeFi</div>
