@@ -1,0 +1,29 @@
+.tools_title {
+  :global {
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #14161A;
+      margin-top: 50px;
+      margin-bottom: 26px;
+      font-family: SFProDisplay-Semibold, SFProDisplay;
+    }
+
+  }
+}
+
+.SmallToolsTitle {
+  
+  :global {
+
+    h5 {
+      font-size: 13px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #768199;
+    }
+
+  }
+
+}

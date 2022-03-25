@@ -1,0 +1,152 @@
+.currency_converter_page {
+  :global {
+
+    .currency_converter_content {
+      max-width: 1200px;
+      padding: 0 50px;
+      margin: 0 auto;
+
+      .currency_converter_box {
+        background-color: #fff;
+        width: 100%;
+        // height: 300px;
+        padding: 36px 40px 56px;
+        border-radius: 12px;
+
+        .currency_converter_box_title_reset_btn {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .reset_btn {
+            padding: 5px 12px;
+            border-radius: 25px;
+            border: 1px solid #0B65FF;
+            color: #0B65FF;
+            font-size: 13px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+              margin-left: 6px;
+            }
+          }
+        }
+
+        .currency_text {
+          display: flex;
+          align-items: center;
+          span {
+            margin: 0 3px;
+          }
+          .currency_num {
+            font-size: 20px;
+            font-weight: 600;
+            font-family: D-DIN-PRO-SemiBold, D-DIN-PRO;
+            color: #14161A;
+          }
+          .currency_type{
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #14161A;
+          }
+        }
+
+        .converter_box {
+          margin-top: 42px;
+          .converter_row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+  
+            // 下拉框样式
+            .converter_Select {
+              height: 48px;
+              width: 560px;
+              .ant-select-selector {
+                height: 100%;
+                padding: 8px 16px;
+                background: #F3F4F5;
+                border-radius: 26px;
+                .ant-select-selection-search {
+                  input {
+                    height: 100%;
+                    padding-left: 6px;
+                  }
+                }
+  
+              }
+              .ant-select-arrow {
+                .anticon {
+                  padding-right: 12px;
+                  font-size: 16px;
+                  font-weight: 600;
+                }
+              }
+  
+              // 下拉框选项样式
+              .converter_Select_Option {
+                display: flex;
+                align-items: center;
+                .converter_row_left_text {
+                  margin-left: 6px;
+                  font-size: 16px;
+                  font-family: PingFangSC-Regular, PingFang SC;
+                  font-weight: 400;
+                  color: #14161A;
+                  .currency_name {
+                    margin-right: 4px;
+                  }
+                }
+              }
+            }
+            // 数字输入框
+            .converter_input {
+              flex: 1;
+              margin-left: 30px;
+              height: 48px;
+              width: 560px;
+              .ant-input {
+                height: 100%;
+                border-radius: 26px;
+                background-color: #F3F4F5;
+                font-size: 18px;
+                text-align: right;
+                padding-right: 20px;
+                font-family: D-DIN-PRO-SemiBold, D-DIN-PRO;
+                font-weight: 600;
+                &:focus {
+                  color: #0B65FF;
+                }
+              }
+            }
+  
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+}
+
+.converter_Select_Option {
+  display: flex;
+  align-items: center;
+  :global {
+    .converter_row_left_text {
+      margin-left: 6px;
+      font-size: 16px;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #14161A;
+      .currency_name {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+

@@ -86,3 +86,10 @@ body,
   width: 1200px;
   margin: 0 auto;
 }
+
+.ant-select-dropdown {
+  border-radius: 10px !important;
+}
+.ant-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: #fff;
+}

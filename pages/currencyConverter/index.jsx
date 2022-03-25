@@ -1,8 +1,38 @@
 import Head from 'next/head'
+import { useState } from 'react';
+import { Select } from 'antd';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import PageTitle, { SmallToolsTitle } from '../../components/ToolsTitle'
+import NumberInput from '../../components/Input/NumberInput'
+import Image from '../../components/Image'
+
+import styles from "./currencyConverter.module.scss";
+
+const { Option } = Select;
+
+const data = [
+  {
+    currency_code: "USD",
+    fullname: "USD-$",
+    icon: "https://bc_api.hractual.com/static/images/currency/usd.png",
+    is_currency: 1,
+    name: "USD-$",
+    price: 1
+  },
+  {
+    coin_id: "bitcoin",
+    fullname: "Bitcoin",
+    icon: "https://coinsky.s3.us-west-1.amazonaws.com/coin-icon/20220211/bitcoin.png",
+    is_currency: 0,
+    name: "BTC",
+    price: 44094.63,
+  }
+]
 
 export default function CurrencyConverter() {
+  const [currencyData, setCurrencyData] = useState([...data])
+
   return (
     <>
       {/* 对于html 头部 */}
@@ -13,12 +43,94 @@ export default function CurrencyConverter() {
       </Head>
 
       {/* 内容 */}
-      <main className='page_tools_bj'>
+      <main className={`${styles.currency_converter_page} page_tools_bj`} >
         {/* 页面头部内容 */}
         <Header />
+
+        {/* 页面内容 */}
+        <div className="currency_converter_content">
+          <PageTitle title="Wallet Authorisation Search" />
+
+          <div className="currency_converter_box">
+
+            {/* 小标题 与 重置按钮 */}
+            <div className="currency_converter_box_title_reset_btn">
+              <SmallToolsTitle title="Data provided by coinsky，2022/02/25 Update" />
+              <div className="reset_btn">
+                <Image src="/svg/reset.svg" width={12} height={12} alt="CoinSky"></Image>
+                <span>Refresh</span>
+              </div>
+            </div>
+
+            {/* 货币计算结果 */}
+            <div className="currency_text">
+              <span className='currency_num' style={{ marginLeft: '0' }}>0</span>
+              <span className='currency_type'>Bitcoin (BTC)</span>
+              <span>=</span>
+              <span className='currency_num'>0</span>
+              <span className='currency_type'>United States Dollar“$”(USD)</span>
+            </div>
+
+            {/* 货币选择器 */}
+            <div className="converter_box">
+              <ConverterRow currencyData={currencyData}></ConverterRow>
+              <ConverterRow currencyData={currencyData} style={{ marginTop: '2.75rem' }}></ConverterRow>
+            </div>
+
+          </div>
+        </div>
 
         <Footer />
       </main>
     </>
   )
 }
+import React from 'react'
+
+function ConverterRow(props) {
+  const { style, currencyData } = props
+  console.log(currencyData);
+  const onChange = (value) => {
+    console.log(`selected ${value}`);
+  }
+  const onSearch = (val) => {
+    console.log('search:', val);
+  }
+  return (
+    <>
+      <div className="converter_row" style={style}>
+        <Select
+          className='converter_Select'
+          showSearch
+          placeholder="Select a person"
+          optionFilterProp="children"
+          onChange={onChange}
+          onSearch={onSearch}
+          filterOption={(input, option) => {
+            console.log(input, option)
+          }}
+        >
+          {
+            currencyData.map((item, index) => {
+              return (
+                <Option value={item.currency_code} key={ `${item.currency_code}${index}` }>
+                <div className={styles.converter_Select_Option}>
+                  <Image src={item.icon} width={16} height={16} />
+                  <div className="converter_row_left_text">
+                    <span className='currency_name'>{ item.fullname }</span>
+                    <span>(BTC)</span>
+                  </div>
+                </div>
+                </Option>
+              )
+            })
+          }
+        </Select>
+        <div className="converter_input">
+          <NumberInput />
+        </div>
+      </div>
+    </>
+  )
+}
+
