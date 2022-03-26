@@ -14,9 +14,6 @@ const { Option } = Select;
 
 export default function CurrencyConverter({ currencyConvertList }) {
   console.log(currencyConvertList)
-    // 请求货币列表参数
-  var page_size = 20
-  var page_no = 1
   const [currencyData, setCurrencyData] = useState(currencyConvertList.items)
   const [presentCurrency, setPresentCurrency] = useState({
     type: 0,
@@ -58,33 +55,6 @@ export default function CurrencyConverter({ currencyConvertList }) {
     SelectObj.type ?
       setTargetCurrency((targetCurrency) => ({...targetCurrency, ...SelectObj})) :
       setPresentCurrency((presentCurrency) => ({...presentCurrency, ...SelectObj}))
-  }
-
-  const onSearch = () => {
-
-  }
-  const getCurrencyConvertList = async (params, isPush) => {
-    const currencyConvertList = await Request('/h5/getH5CurrencyConvertList.json', {
-      body: {
-        page_no: ++page_no,
-        page_size,
-        ...params
-      }
-    })
-    // 计算法币 美元兑换率
-    var currencyList = currencyConvertList.map((item) => {
-      if (parseInt(item.is_currency) === 1) {
-        item.price = 1 / item.price
-      }
-      return item
-    })
-    // 判断是否加载多
-    if (!isPush) { // 不是 则覆盖
-      setCurrencyData(currencyList)
-    } else {
-      // 是 则合并
-      setCurrencyData([...currencyData, ...currencyList])
-    }
   }
 
   return (
@@ -151,16 +121,19 @@ export default function CurrencyConverter({ currencyConvertList }) {
   )
 }
 
+var timer = null
 // 货币选择器 与 输入框模块
 function ConverterRow(props) {
   const { children, style, currencyData, onChangeSelect, currencytype } = props
   const selectRef = createRef()
+  const [currencyListDat, setCurrencyListDat] = useState([...currencyData])
   const OptionStyle = {
     height: '46px',
     // backgroundColor: '#fff',
     display: 'flex',
     alignItems: 'center'
   }
+  // 选中事件
   const onChange = (value, {item}) => {
     console.log(item);
     selectRef.current.blur()
@@ -168,45 +141,88 @@ function ConverterRow(props) {
       ...currencytype,
       ...item
     })
+    setTimeout(() => {
+      setCurrencyListDat([...currencyData])
+    }, 0);
     console.log(`selected ${value}`);
   }
 
-  var search = ''
-  var timer
-  var isSearchLoader = false
+  const [search, setSearch] = useState('')
+    // 请求货币列表参数
+  const [page_size, setPage_size] = useState(20)
+  const [page_no, setPage_no] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [isSearchLoader, setIsSearchLoader] = useState(false)
   const onSearch = (val) => {
-    search = val
     clearTimeout(timer);
-    isSearchLoader = false
+    setSearch(val)
+    setIsSearchLoader(false)
     timer = setTimeout(() => {
       var params = {
-        name: search
+        name: val
       }
-      isSearchLoader = true
-      // page_no = 0
-      
-    console.log(val)
-      // getCurrencyConvertLis(params)
-    }, 1000)
+      setIsSearchLoader(true)
+      setPage_no(0)
+      getCurrencyConvertList(params)
+    }, 1300)
+  }
+  
+  const getCurrencyConvertList = async (params, isPush) => {
+    console.log(page_no * page_size );
+    console.log(total);
+    if (page_no * page_size >= total && total != 0) return
+    const res = await Request('/h5/getH5CurrencyConvertList.json', {
+      body: {
+        page_no: page_no,
+        page_size,
+        ...params
+      }
+    })
+    // 计算法币 美元兑换率
+    var currencyList = res.items.map((item) => {
+      if (parseInt(item.is_currency) === 1) {
+        item.price = 1 / item.price
+      }
+      return item
+    })
+
+    // 判断是否加载多
+    if (!isPush) { // 不是 则覆盖
+      setCurrencyListDat(currencyList)
+    } else {
+      // 是 则合并
+      setCurrencyListDat([...currencyListDat, ...currencyList])
+    }
+    setPage_no((page_no) => ++page_no)
+    setTotal(res.paging.total)
+    setIsSearchLoader(false)
+    setScrollBottomValve(false)
   }
 
-  var scrollBottomValve = false
+
+  const [scrollBottomValve, setScrollBottomValve] = useState(false)
   // 滚动监听
   const scrollChange = (e) => {
+    console.log('滚动', search);
     const { target } = e;
     if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 100) {
       var params = {
       }
       if (search) {
-        params.name = this.search
+        params.name = search
       } else {
-        page_no = 0
+        // page_no = 0
+        // setPage_size(0)
         return
       }
-      // if (!scrollBottomValve) {
-      //   scrollBottomValve = true
-      //   etCurrencyConvertLis(params, true)
-      // }
+      if (!scrollBottomValve) {
+        console.log('请求');
+        console.log('请求前', page_no);
+        console.log('请求前', currencyListDat)
+        // scrollBottomValve = true
+        setScrollBottomValve(true)
+        getCurrencyConvertList(params, true)
+      }
     }
   }
 
@@ -218,17 +234,17 @@ function ConverterRow(props) {
           value={currencytype.coin_id}
           className='converter_Select'
           showSearch
+          // defaultOpen
+          loading={isSearchLoader}
           placeholder="Select a person"
           optionFilterProp="children"
-          onChange={onChange}
-          onSearch={onSearch}
-          filterOption={(input, option) => {
-            // console.log(input, option)
-          }}
-          onPopupScroll={scrollChange}
+          onChange={onChange} // 选中监听
+          onSearch={onSearch} // 输入监听
+          onPopupScroll={scrollChange} // 滚动监听
+          filterOption={false}
         >
           {
-            currencyData.map((item, index) => {
+            currencyListDat.map((item, index) => {
               return (
                 <Option
                   style={OptionStyle}
