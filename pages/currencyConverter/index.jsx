@@ -54,21 +54,24 @@ export default function CurrencyConverter() {
   // 计算转换
   const onChangeInput = (inputObj) => {
     const { value, currencytype } = inputObj
-    console.log(value);
-    if (currencytype.type ) { // 为 1 时 计算 当前货币
+    if (currencytype.type) { // 为 1 时 计算 当前货币
       setTargetCurrency({...targetCurrency, value})
       setPresentCurrency((presentCurrency) => {
+        var strArr = value.split(",")
+        var newValue = strArr.join('')
         return {
           ...presentCurrency,
-          value: (parseFloat(value) * targetCurrency.price) / presentCurrency.price
+          value: (parseFloat(newValue) * targetCurrency.price) / presentCurrency.price
         }
       })
     } else { // 为 0 时 计算 目标货币
       setPresentCurrency({ ...presentCurrency, value })
       setTargetCurrency((targetCurrency) => {
+        var strArr = value.split(",")
+        var newValue = strArr.join('')
         return {
           ...targetCurrency,
-          value: (parseFloat(value) * presentCurrency.price) / targetCurrency.price
+          value: (parseFloat(newValue) * presentCurrency.price) / targetCurrency.price
         }
       })
     }
@@ -119,13 +122,19 @@ export default function CurrencyConverter() {
                 currencyData={currencyData}
                 currencytype={presentCurrency}
                 onChangeInput={onChangeInput}
-                onChangeSelect={onChangeSelect} />
+                onChangeSelect={onChangeSelect}
+              >
+                <NumberInput onChangeInput={onChangeInput} currencytype={presentCurrency} />
+              </ConverterRow>
               <ConverterRow
                 currencyData={currencyData}
                 currencytype={targetCurrency}
                 onChangeInput={onChangeInput}
                 onChangeSelect={onChangeSelect}
-                style={{ marginTop: '2.75rem' }} />
+                style={{ marginTop: '2.75rem' }}
+              >
+                  <NumberInput onChangeInput={onChangeInput} currencytype={targetCurrency} />
+              </ConverterRow>
             </div>
 
           </div>
@@ -139,7 +148,7 @@ export default function CurrencyConverter() {
 
 // 货币选择器 与 输入框模块
 function ConverterRow(props) {
-  const { style, currencyData, onChangeInput, onChangeSelect, currencytype } = props
+  const { children, style, currencyData, onChangeSelect, currencytype } = props
   const selectRef = createRef()
   const OptionStyle = {
     height: '46px',
@@ -199,7 +208,7 @@ function ConverterRow(props) {
           }
         </Select>
         <div className="converter_input">
-          <NumberInput onChangeInput={onChangeInput} currencytype={currencytype} />
+          {children}
         </div>
       </div>
     </>
