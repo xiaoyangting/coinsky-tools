@@ -1,0 +1,215 @@
+.wallet_query_authorization {
+  width: 100%;
+  padding: 0 50px;
+
+  :global {
+    .wallet_query {
+      width: 100%;
+      padding: 40px 40px 20px;
+      margin-top: 25px;
+      border-radius: 12px;
+      background-color: #fff;
+
+      // 授权查询部分样式
+      .authorization_query {
+        height: 48px;
+        display: flex;
+        align-items: center;
+
+        .ant-select {
+          min-width: 90px;
+
+          .ant-select-selector {
+            border: 0;
+            height: 48px;
+            position: relative;
+            padding-right: 0;
+            border-radius: 24px 0 0 24px;
+            box-shadow: none !important;
+            background-color: #F3F4F5;
+            display: flex;
+            align-items: center;
+
+            .ant-select-selection-item {
+              padding: 0;
+              display: flex;
+              align-items: center;
+
+              &::after {
+                content: ' ';
+                width: 10px;
+                height: 15px;
+                visibility: visible;
+                background: url('/svg/selecct-arrow.svg')no-repeat;
+                background-position: 0 0;
+                background-size: 100% 100%;
+                position: absolute;
+                right: 0;
+                top: 7px;
+              }
+            }
+
+            img {
+              width: 20px !important;
+            }
+
+            span {
+              color: #14161A;
+              font-size: 15px;
+              font-weight: 500;
+              margin-left: 8px;
+              padding-right: 17px;
+            }
+          }
+        }
+
+        .ant-input {
+          flex: 1;
+          border: 0;
+          height: 100%;
+          box-shadow: none;
+          margin-right: 16px;
+          border-radius: 0 24px 24px 0;
+          background-color: #F3F4F5;
+        }
+
+        .ant-btn-round  {
+          width: 140px;
+          height: 48px;
+          color: #fff;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+
+      .hint {
+        width: 100%;
+        color: #626C80;
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 40px;
+        text-align: center;
+        display: none;
+      }
+
+      // 钱包授权结果
+      .query_result {
+        width: 100%;
+        margin-top: 32px;
+
+        .wallet_hint {
+          margin: 0 24px 24px;
+          display: flex;
+
+          p {
+            color: #0B65FF;
+            font-size: 14px;
+            font-weight: 400;
+            margin-left: 10px;
+          }
+        }
+
+        .authorized_list {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+
+          .item {
+            width: 49%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 24px 24px 14px;
+            background-color: #F3F4F5;
+
+            .item_header {
+              margin-bottom: 20px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              .user_info {
+                display: flex;
+                align-items: center;
+
+                .user_name {
+                  color: #14161A;
+                  font-size: 16px;
+                  font-weight: 500;
+                  margin-left: 10px;
+                }
+              }
+
+              .pisks_success {
+                color: #04BA75;
+                font-size: 14px;
+                font-weight: 500;
+              }
+              .pisks_error {
+                color: #FA5065;
+                font-size: 14px;
+                font-weight: 500;
+              }
+            }
+
+            .item_content {
+              width: 100%;
+              
+              .content {
+                color: #626C80;
+                font-size: 14px;
+                font-weight: 400;
+                margin-bottom: 10px;
+
+                span {
+                  color: #14161A;
+                  padding-left: 4px;
+                }
+
+                .contracts,
+                .token {
+                  color: #0B65FF;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 下拉框内容样式
+.select_dropdown {
+  padding: 0;
+  max-height: 260px;
+  top: 302px !important;
+  min-width: 280px !important;
+  border: 1px solid #E4E4E6;
+
+  :global {
+    .ant-select-item {
+      height: 45px;
+      padding: 0 20px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+      
+      .ant-select-item-option-content {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #EBEBEB;
+
+        span {
+          margin-left: 8px;
+        }
+      }
+    }
+
+    .ant-select-item-option-selected,
+    .ant-select-item-option-active {
+      background-color:transparent;
+    }
+  }
+}
