@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { createRef, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { Select } from 'antd';
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
@@ -8,38 +8,16 @@ import NumberInput from '../../components/Input/NumberInput'
 import Image from '../../components/Image'
 
 import styles from "./currencyConverter.module.scss";
+import Request from '../../utils/fetch';
 
 const { Option } = Select;
 
-const data = [
-  {
-    coin_id: "USD",
-    fullname: "USD-$",
-    icon: "https://bc_api.hractual.com/static/images/currency/usd.png",
-    is_currency: 1,
-    name: "USD-$",
-    price: 1
-  },
-  {
-    coin_id: "bitcoin",
-    fullname: "Bitcoin",
-    icon: "https://coinsky.s3.us-west-1.amazonaws.com/coin-icon/20220211/bitcoin.png",
-    is_currency: 0,
-    name: "BTC",
-    price: 44094.63,
-  },
-  {
-    coin_id: "ethereum",
-    fullname: "Ethereum",
-    icon: "https://coinsky.s3.us-west-1.amazonaws.com/coin-icon/20220211/ethereum.png",
-    is_currency: 0,
-    name: "ETH",
-    price: 3125.52,
-  }
-]
-
-export default function CurrencyConverter() {
-  const [currencyData, setCurrencyData] = useState([...data])
+export default function CurrencyConverter({ currencyConvertList }) {
+  console.log(currencyConvertList)
+    // 请求货币列表参数
+  var page_size = 20
+  var page_no = 1
+  const [currencyData, setCurrencyData] = useState(currencyConvertList.items)
   const [presentCurrency, setPresentCurrency] = useState({
     type: 0,
     value: 0,
@@ -50,7 +28,6 @@ export default function CurrencyConverter() {
     value: 0,
     ...currencyData[1]
   }) // 目标货币
-
   // 计算转换
   const onChangeInput = (inputObj) => {
     const { value, currencytype } = inputObj
@@ -76,10 +53,38 @@ export default function CurrencyConverter() {
       })
     }
   }
+  // 更改选中货币
   const onChangeSelect = (SelectObj) => {
     SelectObj.type ?
       setTargetCurrency((targetCurrency) => ({...targetCurrency, ...SelectObj})) :
       setPresentCurrency((presentCurrency) => ({...presentCurrency, ...SelectObj}))
+  }
+
+  const onSearch = () => {
+
+  }
+  const getCurrencyConvertList = async (params, isPush) => {
+    const currencyConvertList = await Request('/h5/getH5CurrencyConvertList.json', {
+      body: {
+        page_no: ++page_no,
+        page_size,
+        ...params
+      }
+    })
+    // 计算法币 美元兑换率
+    var currencyList = currencyConvertList.map((item) => {
+      if (parseInt(item.is_currency) === 1) {
+        item.price = 1 / item.price
+      }
+      return item
+    })
+    // 判断是否加载多
+    if (!isPush) { // 不是 则覆盖
+      setCurrencyData(currencyList)
+    } else {
+      // 是 则合并
+      setCurrencyData([...currencyData, ...currencyList])
+    }
   }
 
   return (
@@ -165,8 +170,44 @@ function ConverterRow(props) {
     })
     console.log(`selected ${value}`);
   }
+
+  var search = ''
+  var timer
+  var isSearchLoader = false
   const onSearch = (val) => {
-    console.log('search:', val);
+    search = val
+    clearTimeout(timer);
+    isSearchLoader = false
+    timer = setTimeout(() => {
+      var params = {
+        name: search
+      }
+      isSearchLoader = true
+      // page_no = 0
+      
+    console.log(val)
+      // getCurrencyConvertLis(params)
+    }, 1000)
+  }
+
+  var scrollBottomValve = false
+  // 滚动监听
+  const scrollChange = (e) => {
+    const { target } = e;
+    if (target.scrollTop + target.offsetHeight >= target.scrollHeight - 100) {
+      var params = {
+      }
+      if (search) {
+        params.name = this.search
+      } else {
+        page_no = 0
+        return
+      }
+      // if (!scrollBottomValve) {
+      //   scrollBottomValve = true
+      //   etCurrencyConvertLis(params, true)
+      // }
+    }
   }
 
   return (
@@ -182,8 +223,9 @@ function ConverterRow(props) {
           onChange={onChange}
           onSearch={onSearch}
           filterOption={(input, option) => {
-            console.log(input, option)
+            // console.log(input, option)
           }}
+          onPopupScroll={scrollChange}
         >
           {
             currencyData.map((item, index) => {
@@ -199,7 +241,7 @@ function ConverterRow(props) {
 
                     <div className="converter_row_left_text">
                       <span className='currency_name'>{item.fullname}</span>
-                      <span>(BTC)</span>
+                      <span>({item.name})</span>
                     </div>
                   </div>
                 </Option>
@@ -215,3 +257,20 @@ function ConverterRow(props) {
   )
 }
 
+
+export async function getServerSideProps(context) {
+  const currencyConvertList = await Request('/h5/getH5CurrencyConvertList.json', {
+    body: {
+      page_no: 1,
+      page_size: 20
+    }
+  })
+  currencyConvertList.items[0].coin_id = currencyConvertList.items[0].currency_code
+  // currencyConvertList.items[0].price = 1
+
+  return {
+    props: {
+      currencyConvertList
+    }
+  }
+}

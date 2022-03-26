@@ -19,7 +19,6 @@ export default function NumberInput(props) {
         value = '0.'
       }
       value = value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '')
-      console.log(value);
       iValue = value
       e.target.value = iValue
       iValue !== '' && onChangeInput({
@@ -30,7 +29,6 @@ export default function NumberInput(props) {
   }
   // 初始化input的值
   const setInput = () => {
-    console.log(currencyPrices(iValue));
     inputRef.current.value = currencyPrices(iValue)
   }
   useEffect(() => {
