@@ -1,14 +1,31 @@
-import { Card } from 'antd'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import ToolsTitle, { SmallToolsTitle } from '../../components/ToolsTitle'
 
 import style from './index.module.scss'
+import Request from '../../utils/fetch'
 
-export default function NewCurriculum() {
+export async function getServerSideProps(context) {
+  const getDirectoryList = await Request('/h5/getDirectoryList.json', {
+    body: {
+      lang: 'EN',
+      client: 'wap'
+    }
+  })
+
+  return {
+    props: {
+      getDirectoryList
+    }
+  }
+}
+
+export default function NewCurriculum({ getDirectoryList }) {
+
   return (
     <>
       {/* 对于html 头部 */}
@@ -27,26 +44,21 @@ export default function NewCurriculum() {
         <div className="container">
 
           <div className={style.class}>
-            <ToolsTitle title="Beginner’s Guide" />
+            <ToolsTitle title="Beginner’s Guide" bottom='-4px' />
 
-            <div className="class_list">
-              <div className='title'>Preface</div>
+            {getDirectoryList.map((item) => (
+              <div className="class_list" key={item.classify_id}>
+                <div className='title'>{item.name}</div>
 
-              <div className="class_item">
-                <div className="class_name">1.Blockchain White Book</div>
-                <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
+                {item.articles.map((sonItem) => (
+                  <div className="class_item" key={sonItem.ctx_id}>
+                    <div className="class_name">{sonItem.title}</div>
+                    <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
+                  </div>
+                ))}
+
               </div>
-
-              <div className="class_item">
-                <div className="class_name">2.Blockchain White Book</div>
-                <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
-              </div>
-
-              <div className="class_item">
-                <div className="class_name">3.Blockchain White Book</div>
-                <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
-              </div>
-            </div>
+            ))}
           </div>
 
         </div>
