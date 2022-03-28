@@ -78,7 +78,7 @@ body,
 /* 工具页面背景色之一 */
 .page_tools_bj {
   position: relative;
-  min-height: calc(100% - 200px);
+  min-height: calc(100% - 160px);
   background: #F5F6F7;
 }
 

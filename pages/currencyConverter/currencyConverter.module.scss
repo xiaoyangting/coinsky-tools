@@ -27,6 +27,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
             span {
               margin-left: 6px;
             }
@@ -37,7 +38,7 @@
           display: flex;
           align-items: center;
           span {
-            margin: 0 3px;
+            margin: 0 4px;
           }
           .currency_num {
             font-size: 20px;

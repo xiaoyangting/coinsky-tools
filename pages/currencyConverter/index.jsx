@@ -13,50 +13,61 @@ import Request from '../../utils/fetch';
 const { Option } = Select;
 
 export default function CurrencyConverter({ currencyConvertList }) {
-  console.log(currencyConvertList)
   const [currencyData, setCurrencyData] = useState(currencyConvertList.items)
   const [presentCurrency, setPresentCurrency] = useState({
     type: 0,
     value: 0,
-    ...currencyData[0]
+    ...currencyData[1]
   }) // 当前货币
   const [targetCurrency, setTargetCurrency] = useState({
     type: 1,
     value: 0,
-    ...currencyData[1]
+    ...currencyData[0]
   }) // 目标货币
+
   // 计算转换
-  const onChangeInput = (inputObj) => {
+  const onChangeInput = (inputObj, selectObj) => { // 判断是从输入框传来的事件 还是从 select(选项框传来的)
     const { value, currencytype } = inputObj
     if (currencytype.type) { // 为 1 时 计算 当前货币
-      setTargetCurrency({...targetCurrency, value})
+      setTargetCurrency({...targetCurrency, ...selectObj, value})
       setPresentCurrency((presentCurrency) => {
         var strArr = value.split(",")
         var newValue = strArr.join('')
+        var price = selectObj?.price ? selectObj.price : targetCurrency.price
         return {
           ...presentCurrency,
-          value: (parseFloat(newValue) * targetCurrency.price) / presentCurrency.price
+          // value: (parseFloat(newValue) * targetCurrency.price) / presentCurrency.price
+          value: (parseFloat(newValue) * price) / presentCurrency.price
         }
       })
     } else { // 为 0 时 计算 目标货币
-      setPresentCurrency({ ...presentCurrency, value })
+      setPresentCurrency({ ...presentCurrency, ...selectObj, value })
       setTargetCurrency((targetCurrency) => {
         var strArr = value.split(",")
         var newValue = strArr.join('')
+        var price = selectObj?.price ? selectObj.price : presentCurrency.price
         return {
           ...targetCurrency,
-          value: (parseFloat(newValue) * presentCurrency.price) / targetCurrency.price
+          // value: (parseFloat(newValue) * presentCurrency.price) / targetCurrency.price
+          value: (parseFloat(newValue) * price) / targetCurrency.price
         }
       })
     }
   }
   // 更改选中货币
   const onChangeSelect = (SelectObj) => {
-    SelectObj.type ?
-      setTargetCurrency((targetCurrency) => ({...targetCurrency, ...SelectObj})) :
-      setPresentCurrency((presentCurrency) => ({...presentCurrency, ...SelectObj}))
+    let inputObj = {
+      currencytype: SelectObj.type,
+      value: SelectObj.type ? targetCurrency.value : presentCurrency.value
+    }
+    onChangeInput(inputObj, SelectObj)
   }
 
+  // 重置
+  const reset = () => {
+    setPresentCurrency({...presentCurrency, value: 0})
+    setTargetCurrency({...targetCurrency, value: 0})
+  }
   return (
     <>
       {/* 对于html 头部 */}
@@ -78,18 +89,18 @@ export default function CurrencyConverter({ currencyConvertList }) {
             {/* 小标题 与 重置按钮 */}
             <div className="currency_converter_box_title_reset_btn">
               <SmallToolsTitle title="Data provided by coinsky，2022/02/25 Update" />
-              <div className="reset_btn">
+              <div className="reset_btn" onClick={ reset }>
                 <Image src="/svg/reset.svg" width={12} height={12} alt="CoinSky"></Image>
                 <span>Refresh</span>
               </div>
             </div>
             {/* 货币计算结果 */}
             <div className="currency_text">
-              <span className='currency_num' style={{ marginLeft: '0' }}>0</span>
-              <span className='currency_type'>Bitcoin (BTC)</span>
+              <span className='currency_num' style={{ marginLeft: '0' }}>{ presentCurrency.value }</span>
+              <span className='currency_type'>{ presentCurrency.fullname } ({ presentCurrency.name })</span>
               <span>=</span>
-              <span className='currency_num'>0</span>
-              <span className='currency_type'>United States Dollar“$”(USD)</span>
+              <span className='currency_num'>{ targetCurrency.value }</span>
+              <span className='currency_type'>{ targetCurrency.fullname } ({ targetCurrency.name })</span>
             </div>
             {/* 货币选择器 */}
             <div className="converter_box">
@@ -114,9 +125,8 @@ export default function CurrencyConverter({ currencyConvertList }) {
 
           </div>
         </div>
-
-        <Footer />
       </main>
+      <Footer />
     </>
   )
 }
@@ -144,7 +154,7 @@ function ConverterRow(props) {
     setTimeout(() => {
       setCurrencyListDat([...currencyData])
     }, 0);
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   }
 
   const [search, setSearch] = useState('')
@@ -168,8 +178,6 @@ function ConverterRow(props) {
   }
   
   const getCurrencyConvertList = async (params, isPush) => {
-    console.log(page_no * page_size );
-    console.log(total);
     if (page_no * page_size >= total && total != 0) return
     const res = await Request('/h5/getH5CurrencyConvertList.json', {
       body: {
