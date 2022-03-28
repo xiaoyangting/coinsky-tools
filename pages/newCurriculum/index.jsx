@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import Header from '../../components/Header'
@@ -9,22 +10,15 @@ import ToolsTitle, { SmallToolsTitle } from '../../components/ToolsTitle'
 import style from './index.module.scss'
 import Request from '../../utils/fetch'
 
-export async function getServerSideProps(context) {
-  const getDirectoryList = await Request('/h5/getDirectoryList.json', {
-    body: {
-      lang: 'EN',
-      client: 'wap'
-    }
-  })
-
-  return {
-    props: {
-      getDirectoryList
-    }
-  }
-}
-
 export default function NewCurriculum({ getDirectoryList }) {
+  const router = useRouter()
+
+  // 去详情页
+  const toDetail = (ctx_id) => {
+    router.push({
+      pathname: `/newCurriculum/${ctx_id}`
+    })
+  }
 
   return (
     <>
@@ -51,18 +45,15 @@ export default function NewCurriculum({ getDirectoryList }) {
                 <div className='title'>{item.name}</div>
 
                 {item.articles.map((sonItem) => (
-                  <div className="class_item" key={sonItem.ctx_id}>
+                  <div className="class_item" key={sonItem.ctx_id} onClick={() => toDetail(sonItem.ctx_id)}>
                     <div className="class_name">{sonItem.title}</div>
                     <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
                   </div>
                 ))}
-
               </div>
             ))}
           </div>
-
         </div>
-
       </main>
 
       {/* 底部 */}
@@ -71,4 +62,19 @@ export default function NewCurriculum({ getDirectoryList }) {
       </footer>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const getDirectoryList = await Request('/h5/getDirectoryList.json', {
+    body: {
+      lang: 'EN',
+      client: 'wap'
+    }
+  })
+
+  return {
+    props: {
+      getDirectoryList
+    }
+  }
 }
