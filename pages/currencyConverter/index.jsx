@@ -60,6 +60,7 @@ export default function CurrencyConverter({ currencyConvertList }) {
       currencytype: SelectObj.type,
       value: SelectObj.type ? targetCurrency.value : presentCurrency.value
     }
+    inputObj.value = inputObj.value + ''
     onChangeInput(inputObj, SelectObj)
   }
 
