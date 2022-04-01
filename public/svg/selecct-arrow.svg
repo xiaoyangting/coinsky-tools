@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="10px" height="8px" viewBox="0 0 10 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>路径 26备份 11</title>
-    <g id="工具官网" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
-        <g id="钱包授权查询-查询结果" transform="translate(-535.000000, -261.000000)" stroke="#272B33" stroke-width="1.6">
-            <g id="编组-2" transform="translate(450.000000, 241.000000)">
-                <g id="编组-9" transform="translate(85.000000, 20.000000)">
-                    <path d="M3,1 L6.95285955,4.95285955 C6.9788945,4.9788945 6.9788945,5.0211055 6.95285955,5.04714045 L3,9 L3,9" id="路径-26备份-11" transform="translate(5.000000, 5.000000) scale(1, -1) rotate(-90.000000) translate(-5.000000, -5.000000) "></path>
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g transform="translate(-535.000000, -261.000000)" stroke="#272B33" stroke-width="1.6">
+            <g transform="translate(450.000000, 241.000000)">
+                <g transform="translate(85.000000, 20.000000)">
+                    <path d="M3,1 L6.95285955,4.95285955 C6.9788945,4.9788945 6.9788945,5.0211055 6.95285955,5.04714045 L3,9 L3,9" itransform="translate(5.000000, 5.000000) scale(1, -1) rotate(-90.000000) translate(-5.000000, -5.000000) "></path>
                 </g>
             </g>
         </g>
