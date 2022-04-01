@@ -7,7 +7,6 @@ export default function NumberInput(props) {
   var iValue = currencytype.value
   let isComposition = false
 
-  // 更改value 值
   const changeInputValue = (e) => {
     if (!isComposition) {
       let { value } = e.target
@@ -27,14 +26,12 @@ export default function NumberInput(props) {
       })
     }
   }
-  // 初始化input的值
   const setInput = () => {
     inputRef.current.value = currencyPrices(iValue)
   }
   useEffect(() => {
     setInput()
   })
-  // 判断是否输入法输入
   const handleComposition = (ev) => {
     console.log(ev.type)
     if (ev.type === 'compositionend') {

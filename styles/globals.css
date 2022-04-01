@@ -75,7 +75,7 @@ body,
   width: 100%;
   touch-action: manipulation;
 }
-/* 工具页面背景色之一 */
+/* One of the tool page background colors */
 .page_tools_bj {
   position: relative;
   min-height: calc(100% - 160px);
