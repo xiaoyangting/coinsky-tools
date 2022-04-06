@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 import Header from '../../components/Header'
@@ -25,7 +26,7 @@ export default function NewCurriculum({ getDirectoryList }) {
         
         <Header></Header>
 
-        {/* 页面内容 */}
+        
         <div className="container">
 
           <div className={style.class}>
@@ -36,18 +37,15 @@ export default function NewCurriculum({ getDirectoryList }) {
                 <div className='title'>{item.name}</div>
 
                 {item.articles.map((sonItem) => (
-                  <div className="class_item" key={sonItem.ctx_id}>
+                  <div className="class_item" key={sonItem.ctx_id} onClick={() => toDetail(sonItem.ctx_id)}>
                     <div className="class_name">{sonItem.title}</div>
                     <Image src="/svg/right_pages.svg" width={8} height={14} alt="" />
                   </div>
                 ))}
-
               </div>
             ))}
           </div>
-
         </div>
-
       </main>
 
       
