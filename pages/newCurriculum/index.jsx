@@ -9,21 +9,6 @@ import ToolsTitle, { SmallToolsTitle } from '../../components/ToolsTitle'
 import style from './index.module.scss'
 import Request from '../../utils/fetch'
 
-export async function getServerSideProps(context) {
-  const getDirectoryList = await Request('/h5/getDirectoryList.json', {
-    body: {
-      lang: 'EN',
-      client: 'wap'
-    }
-  })
-
-  return {
-    props: {
-      getDirectoryList
-    }
-  }
-}
-
 export default function NewCurriculum({ getDirectoryList }) {
 
   return (
@@ -71,4 +56,18 @@ export default function NewCurriculum({ getDirectoryList }) {
       </footer>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const getDirectoryList = await Request('/beginnerGuide.json', {
+    body: {
+      lang: 'EN',
+    }
+  })
+
+  return {
+    props: {
+      getDirectoryList
+    }
+  }
 }

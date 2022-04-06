@@ -12,7 +12,7 @@ export default function Home() {
 
 
       <main className='page_tools_bj'>
-        123
+        
       </main>
 
       
