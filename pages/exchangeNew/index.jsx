@@ -5,10 +5,13 @@ import Image from 'next/image'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import ToolsTitle from '../../components/ToolsTitle'
+import { getTime } from '../../utils/date'
+import Request from '../../utils/fetch'
 
 import style from './index.module.scss'
 
-export default function Exchange() {
+export default function Exchange({ getNewCoins }) {
+  console.log(getNewCoins);
 
   const columns = [
     {
@@ -17,76 +20,56 @@ export default function Exchange() {
       width: '200px',
       dataIndex: 'name',
       className: 'exchange_name',
-      render: (name) => (
+      render: (name, record) => {
+        return (
         <>
           <Image src="/svg/icon-1.svg" width={20} height={20} alt="" />
           <a>{name}</a>
         </>
-      )
+        )
+      }
     },
     {
       width: '210px',
-      key: 'arrivalTime',
+      key: 'time',
       title: 'New Arrival Time',
-      dataIndex: 'arrivalTime',
+      dataIndex: 'time',
+      render: time => (
+        <span style={ {color: '#14161A', fontWeight: '400',fontFamily: 'PingFangSC-Regular, PingFang SC'} }>{ getTime(time) }</span>
+      )
     },
     {
       width: '230px',
-      key: 'platform',
+      key: 'exchange',
       title: 'New Platform',
-      dataIndex: 'platform',
+      dataIndex: 'exchange',
     },
     {
       key: 'price',
       title: 'Price',
       width: '200px',
       dataIndex: 'price',
+      render: price => (
+        <span>{ price ? `$${price}` : '-' }</span>
+      )
     },
     {
       width: '180px',
-      key: 'increase',
+      key: 'rate_24h',
       title: 'Increase',
-      dataIndex: 'increase',
-      render: increase => <span className={increase > 0 ? 'rise' : 'fall'}>{increase}%</span>,
+      dataIndex: 'rate_24h',
+      render: increase => <span className={increase > 0 ? 'rise' : 'fall'}>{increase ? `${increase}%` : '-'}</span>,
     },
-    {
-      title: '',
-      align: 'right',
-      key: 'bulletin',
-      dataIndex: 'bulletin',
-      className: 'exchange_bulletin'
-    },
+    // {
+    //   title: '',
+    //   align: 'right',
+    //   key: 'bulletin',
+    //   dataIndex: 'bulletin',
+    //   className: 'exchange_bulletin'
+    // },
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'CELO',
-      arrivalTime: '03.15 09:00:05',
-      platform: 'Coinbase Exchange',
-      price: '$0.0000000543',
-      increase: '-4.43',
-      bulletin: 'View the bulletin'
-    },
-    {
-      key: '2',
-      name: 'ZIMU',
-      arrivalTime: '03.15 09:00:05',
-      platform: 'MEXC',
-      price: '$0.0000000543',
-      increase: '103.43',
-      bulletin: 'View the bulletin'
-    },
-    {
-      key: '3',
-      name: 'SD',
-      arrivalTime: '03.15 09:00:05',
-      platform: 'Huobi Global',
-      price: '$0.000842',
-      increase: '103.43',
-      bulletin: 'View the bulletin'
-    },
-  ];
+  const data = [...getNewCoins];
 
   return (
     <>
@@ -109,7 +92,7 @@ export default function Exchange() {
 
             <div className="prompt">
               Download the app to subscribe to notifications of new releases on each exchange,&nbsp;
-              <span>Subscribe now</span>!
+              <a target="_blank" href='https://www.coinsky.ai/' rel="noreferrer">Subscribe now</a>!
             </div>
 
             {/* 表格部分数据 */}
@@ -125,4 +108,10 @@ export default function Exchange() {
       </footer>
     </>
   )
+}
+export async function getServerSideProps(context) {
+  const getNewCoins = await Request('/newCoins.json')
+  return {
+    props: { getNewCoins }
+  }
 }

@@ -48,7 +48,7 @@ export default function CurriculumDetail({ articleDetail }) {
 export async function getServerSideProps(context) {
 
   // 获取课堂详情数据
-  const articleDetail = await Request('/h5/getArticleDetails.json', {
+  const articleDetail = await Request('/beginnerGuideInfo.json', {
     body: {
       ctx_id: context.query.ctx_id
     }

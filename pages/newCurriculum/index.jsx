@@ -11,6 +11,13 @@ import style from './index.module.scss'
 import Request from '../../utils/fetch'
 
 export default function NewCurriculum({ getDirectoryList }) {
+  const router = useRouter()
+
+  const toDetail = (ctx_id) => {
+    router.push({
+      pathname: `/newCurriculum/${ctx_id}`
+    })
+  }
 
   return (
     <>

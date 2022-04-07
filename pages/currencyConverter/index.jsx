@@ -27,8 +27,8 @@ export default function CurrencyConverter({ currencyConvertList }) {
 
   // Calculation of transformation
   const onChangeInput = (inputObj, selectObj) => { // Determine whether the event is coming from the input field or from the Select field  
-    const { value, currencytype } = inputObj
-    if (currencytype.type) { // Is 1 to calculate the current currency
+    const { value, type } = inputObj
+    if (type) { // Is 1 to calculate the current currency
       setTargetCurrency({...targetCurrency, ...selectObj, value})
       setPresentCurrency((presentCurrency) => {
         var strArr = value.split(",")
@@ -57,7 +57,7 @@ export default function CurrencyConverter({ currencyConvertList }) {
   // Change the selected currency
   const onChangeSelect = (SelectObj) => {
     let inputObj = {
-      currencytype: SelectObj.type,
+      type: SelectObj.type,
       value: SelectObj.type ? targetCurrency.value : presentCurrency.value
     }
     inputObj.value = inputObj.value + ''
@@ -146,10 +146,9 @@ function ConverterRow(props) {
   }
   // 选中事件
   const onChange = (value, {item}) => {
-    console.log(item);
     selectRef.current.blur()
     onChangeSelect({
-      ...currencytype,
+      type: currencytype.type,
       ...item
     })
     setTimeout(() => {
@@ -284,7 +283,7 @@ function ConverterRow(props) {
 
 
 export async function getServerSideProps(context) {
-  const currencyConvertList = await Request('/h5/getH5CurrencyConvertList.json', {
+  const currencyConvertList = await Request('/currencyList.json', {
     body: {
       page_no: 1,
       page_size: 20

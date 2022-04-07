@@ -21,7 +21,7 @@ export default function NumberInput(props) {
       iValue = value
       e.target.value = iValue
       iValue !== '' && onChangeInput({
-        currencytype,
+        type: currencytype.type,
         value: iValue
       })
     }
