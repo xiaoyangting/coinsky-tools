@@ -179,7 +179,7 @@ function ConverterRow(props) {
   
   const getCurrencyConvertList = async (params, isPush) => {
     if (page_no * page_size >= total && total != 0) return
-    const res = await Request('/h5/getH5CurrencyConvertList.json', {
+    const res = await Request('/currencyList.json', {
       body: {
         page_no: page_no,
         page_size,
